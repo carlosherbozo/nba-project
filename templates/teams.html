@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang = "en">
+   <head></head>
+   <body>
+      
+      <h3>
+         <a href = "{{ url_for('show_all') }}">Flask 
+            SQLAlchemy example - Show all view</a>
+      </h3>
+      
+      <hr/>
+      {%- for message in get_flashed_messages() %}
+         {{ message }}
+      {%- endfor %}
+		
+      <h3>Teams (<a href = "{{ url_for('new') }}">Add Team
+         </a>)</h3>
+
+      <table>
+         <thead>
+            <tr>
+               <th>Team Name</th>
+               <th>City</th>
+               <th>Division</th>
+               <th>Head Coach</th>
+               <th>Year Founded</th>
+               <th>Number of Championships</th>
+               <th>Home Stadium</th>
+            </tr>
+         </thead>
+         
+         <tbody>
+            {% for team in teams %}
+               <tr>
+                  <td>{{ team.Team_Name }}</td>
+                  <td>{{ team.City }}</td>
+                  <td>{{ team.Division }}</td>
+                  <td>{{ team.Head_Coach }}</td>
+                  <td>{{ team.Year_Founded }}</td>
+                  <td>{{ team.Number_Of_Championships }}</td>
+                  <td>{{ team.Home_Stadium }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      
+   </body>
+</html>
