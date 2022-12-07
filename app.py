@@ -104,8 +104,3 @@ def new():
             return redirect(url_for('show_all'))
     return render_template('new.html')
 
-# added the following line
-with app.app_context():
-    if __name__ == '__main__':
-        db.create_all()
-        app.run(debug = True)
