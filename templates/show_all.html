@@ -40,6 +40,12 @@
             {% endfor %}
          </tbody>
       </table>
+
+      <form action = "{{ request.path }}" method = "post">
+         <label for = "addr">Enter SQL commands here:</label><br>
+         <textarea name = "addr" placeholder = "SELECT ..."></textarea><br>
+         <input type = "submit" value = "Execute" />
+      </form>
       
    </body>
 </html>
