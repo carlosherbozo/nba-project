@@ -58,13 +58,14 @@ class teams(db.Model):
 
 def execute_query(stmt_str: str):
     try:
-        with connect(db, isolation_level=None, uri=True) as connection:
+        with connect('students.sqlite3', isolation_level=None, uri=True) as connection:
             # Create row factory
             connection.row_factory = Row
             with closing(connection.cursor()) as cursor:
                 cursor.execute(stmt_str)
                 data = cursor.fetchall()
-        return data
+                names = [description[0] for description in cursor.description]
+        return (names, data)
     except:
         return None
         
@@ -100,8 +101,8 @@ def show_all():
     data = None
     if request.method == "POST":
         query = request.form["query"]
-        data = execute_query(query)
-        return render_template('show_all.html', students = students.query.all() , data=data)
+        names, data = execute_query(query)
+        return render_template('show_all.html', students = students.query.all() , names=names, data=data)
     return render_template('show_all.html', students = students.query.all() , data=data)
 
 @app.route('/teams')

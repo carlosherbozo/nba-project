@@ -41,30 +41,31 @@
          </tbody>
       </table>
 
-      <form action = "{{ request.path }}" method = "post">
+      <form action = "/" method = "post">
          <label for = "addr">Enter SQL commands here:</label><br>
-         <textarea name = "addr" placeholder = "SELECT ..."></textarea><br>
-         <input type = "submit" id="query" name="query" value = "Execute" />
+         <input type="text" id="query" name="query" placeholder = "SELECT ..."></input><br>
+         <input type = "submit" value = "Execute" />
       </form>
       {% if data %}
       <table>
          <thead>
             <tr>
-               {% for colname in data[0] %}
-               <td>{{colname}}</td>
+               {% for name in names %}
+                 <td>{{name}}</td>
                {% endfor %}
             </tr>
          </thead>
          <tbody>
-            {% for row in data[1:] %}
-               {% for colname in data[0] %}
+            {% for row in data %}
                <tr>
-                  {{row[colname]}}
+                  {% for name in names %}
+                     <td>{{row[name]}}</td>
+                  {% endfor %}
                </tr>
-               {% endfor %}
             {% endfor %}
          </tbody>
       </table>
       {% endif %}
-   </body>
+   <iframe width="100%" height="500px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/437/diagrams/schema-for-nba-league/embed"></iframe>
+</body>
 </html>
