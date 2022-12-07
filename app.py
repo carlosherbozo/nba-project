@@ -4,6 +4,8 @@ from flask import Flask, request, flash, url_for, redirect, render_template
 # wrote the following two lines by breaking up one
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
+from sqlite3 import Cursor, connect, Row
+from contextlib import closing
 
 # pip3 install flask
 # pip3 install Flask_sqlalchemy
@@ -54,6 +56,18 @@ class teams(db.Model):
         self.Number_Of_Championships = Number_Of_Championships
         self.Home_Stadium = Home_Stadium
 
+def execute_query(stmt_str: str):
+    try:
+        with connect('students.sqlite3', isolation_level=None, uri=True) as connection:
+            # Create row factory
+            connection.row_factory = Row
+            with closing(connection.cursor()) as cursor:
+                cursor.execute(stmt_str)
+                data = cursor.fetchall()
+                names = [description[0] for description in cursor.description]
+        return (names, data)
+    except:
+        return None
         
 @event.listens_for(students.__table__, 'after_create')
 def create_departments(*args, **kwargs):
@@ -82,9 +96,14 @@ def create_teams(*args, **kwargs):
             db.session.commit()
 
 
-@app.route('/')
+@app.route('/', methods = ['GET', 'POST'])
 def show_all():
-    return render_template('show_all.html', students = students.query.all() )
+    data = None
+    if request.method == "POST":
+        query = request.form["query"]
+        names, data = execute_query(query)
+        return render_template('show_all.html', students = students.query.all() , names=names, data=data)
+    return render_template('show_all.html', students = students.query.all() , data=data)
 
 @app.route('/teams')
 def teams_all():

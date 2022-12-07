@@ -18,36 +18,32 @@
 
       <h3>NBA Teams (<a href = "{{ url_for('teams_all') }}">All NBA Teams
          </a>)</h3>
-      
+
+      <form action = "/" method = "post">
+         <label for = "addr">Enter SQL commands here:</label><br>
+         <input type="text" id="query" name="query" placeholder = "SELECT ..."></input><br>
+         <input type = "submit" value = "Execute" />
+      </form>
+      {% if data %}
       <table>
          <thead>
             <tr>
-               <th>Name</th>
-               <th>City</th>
-               <th>Address</th>
-               <th>Pin</th>
+               {% for name in names %}
+                 <th>{{name}}</th>
+               {% endfor %}
             </tr>
          </thead>
-         
          <tbody>
-            {% for student in students %}
+            {% for row in data %}
                <tr>
-                  <td>{{ student.name }}</td>
-                  <td>{{ student.city }}</td>
-                  <td>{{ student.addr }}</td>
-                  <td>{{ student.pin }}</td>
+                  {% for name in names %}
+                     <td>{{row[name]}}</td>
+                  {% endfor %}
                </tr>
             {% endfor %}
          </tbody>
       </table>
-
-      <form action = "{{ request.path }}" method = "post">
-         <label for = "addr">Enter SQL commands here:</label><br>
-         <textarea name = "addr" placeholder = "SELECT ..."></textarea><br>
-         <input type = "submit" value = "Execute" />
-      </form>
-
-      <iframe width="100%" height="500px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/437/diagrams/schema-for-nba-league/embed"></iframe>
-      
-   </body>
+      {% endif %}
+   <iframe width="100%" height="500px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/437/diagrams/schema-for-nba-league/embed"></iframe>
+</body>
 </html>
