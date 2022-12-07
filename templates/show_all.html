@@ -44,8 +44,27 @@
       <form action = "{{ request.path }}" method = "post">
          <label for = "addr">Enter SQL commands here:</label><br>
          <textarea name = "addr" placeholder = "SELECT ..."></textarea><br>
-         <input type = "submit" value = "Execute" />
+         <input type = "submit" id="query" name="query" value = "Execute" />
       </form>
-      
+      {% if data %}
+      <table>
+         <thead>
+            <tr>
+               {% for colname in data[0] %}
+               <td>{{colname}}</td>
+               {% endfor %}
+            </tr>
+         </thead>
+         <tbody>
+            {% for row in data[1:] %}
+               {% for colname in data[0] %}
+               <tr>
+                  {{row[colname]}}
+               </tr>
+               {% endfor %}
+            {% endfor %}
+         </tbody>
+      </table>
+      {% endif %}
    </body>
 </html>
