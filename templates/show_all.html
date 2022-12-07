@@ -4,17 +4,14 @@
    <body>
       <iframe width="100%" height="350px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/437/diagrams/schema-for-nba-league/embed"></iframe>
       <h3>
-         <a href = "{{ url_for('show_all') }}">Flask 
-            SQLAlchemy example - Show all view</a>
+         <a href = "{{ url_for('show_all') }}"> 
+            NBAsearch</a>
       </h3>
       
       <hr/>
       {%- for message in get_flashed_messages() %}
          {{ message }}
       {%- endfor %}
-		
-      <h3>Students (<a href = "{{ url_for('new') }}">Add Student
-         </a>)</h3>
 
       <h3>NBA Teams (<a href = "{{ url_for('teams_all') }}">All NBA Teams
          </a>)</h3>
