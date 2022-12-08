@@ -10,17 +10,28 @@
       <nav class="level">
          <p class="level-item has-text-centered">
             <a href = "{{ url_for('show_all') }}">
-               NBA Search</a>
-         </p>
-
-         <p class="level-item has-text-centered">
-           <img src="https://a4.espncdn.com/combiner/i?img=%2Fi%2Fespn%2Fmisc_logos%2F500%2Fnba.png" alt="" style="height: 70px;">
+               Home</a>
          </p>
 
          <p class="level-item has-text-centered">
             <a href = "{{ url_for('teams_all') }}">NBA Teams
             </a>
          </p>
+
+         <p class="level-item has-text-centered">
+            <img src="https://a4.espncdn.com/combiner/i?img=%2Fi%2Fespn%2Fmisc_logos%2F500%2Fnba.png" alt="" style="height: 70px;">
+          </p>
+
+         <p class="level-item has-text-centered">
+            <a href = "{{ url_for('search_players') }}">NBA Player Search
+            </a>
+         </p>
+
+         <p class="level-item has-text-centered">
+            <a href = "{{ url_for('team_stats') }}">NBA Teams
+            </a>
+         </p>
+         
        </nav>
       
       <hr/>
