@@ -77,14 +77,13 @@ def player_search(input: dict):
             return execute_query(stmt_str, vals)
         return execute_query(stmt_str)
     except:
-        return {}
+        return [[], {}]
 
 def team_search(input: dict):
-    stmt_str = "SELECT AVG(Points_per_Game) as Points_per_Game, AVG(Rebounds_per_Game) as Rebounds_per_Game, "
+    stmt_str = "SELECT Team_Name, Division, AVG(Points_per_Game) as Points_per_Game, AVG(Rebounds_per_Game) as Rebounds_per_Game, "
     stmt_str += "AVG(Assists_per_Game) as Assists_per_Game, AVG(Steals_per_Game) as Steals_per_Game, "
-    stmt_str += "AVG(Block_per_Game) as Blocks_per_Game, AVG(Turnovers_per_Game) as Turnovers_per_Game"
-    stmt_str += "FROM (team NATURAL JOIN players) "
-    stmt_str += "GROUP BY Team_Name "
+    stmt_str += "AVG(Blocks_per_Game) as Blocks_per_Game, AVG(Turnovers_per_Game) as Turnovers_per_Game "
+    stmt_str += "FROM (teams NATURAL JOIN players) "
     try:
         filters = []
         vals = []
@@ -94,10 +93,12 @@ def team_search(input: dict):
                 vals.append("%" + str(input[key]) + "%")
         if len(filters) != 0:
             stmt_str += ("WHERE " + " AND ".join(filters))
+            stmt_str += "GROUP BY Team_Name "
             return execute_query(stmt_str, vals)
+        stmt_str += "GROUP BY Team_Name "
         return execute_query(stmt_str)
     except:
-        return {}
+        return [[], {}]
 
 
 # @event.listens_for(students.__table__, 'after_create')
@@ -175,17 +176,15 @@ def search_players():
 @app.route('/teamstats', methods = ['GET'])
 def team_stats():
     name = request.args.get('name')
-    div = request.args.get('division')
+    div = request.args.get('div')
     if any(item is not None for item in [name, div]):
         parameters = {
-            "Team_Name": div if div else '',
+            "Team_Name": name if name else '',
             "Division": div if div else '',
         }
-        names, data = player_search(parameters)
-        html = render_template('teamstats.html', name=names, \
-            data = data)
-        response = make_response(html)
+        names, data = team_search(parameters)
+        html = render_template('teamstats.html', names=names, data = data)
     else:
         html = render_template('teamstats.html')
-        response = make_response(html)
+    response = make_response(html)
     return response
