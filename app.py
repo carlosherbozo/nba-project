@@ -100,20 +100,6 @@ def team_search(input: dict):
     except:
         return [[], {}]
 
-
-# @event.listens_for(students.__table__, 'after_create')
-# def create_departments(*args, **kwargs):
-#     with open('data.csv', newline='\n') as csvfile:
-#         reader = csv.reader(csvfile, delimiter=',')
-#         for i, row in enumerate(reader):
-#             if i == 0:
-#                 continue
-
-#             student = students(row[0], row[1], row[2], row[3])
-#             logging.debug("Student {}, {}, {}, {}".format(row[0], row[1], row[2], row[3]))
-#             db.session.add(student)
-#             db.session.commit()
-
 @event.listens_for(teams.__table__, 'after_create')
 def create_teams(*args, **kwargs):
     with open('Team.csv', newline='\n') as csvfile:
