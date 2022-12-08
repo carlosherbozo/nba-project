@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html lang = "en">
-   <head></head>
-   <body>
-      <iframe width="100%" height="350px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/437/diagrams/schema-for-nba-league/embed"></iframe>
-      <h3>
-         <a href = "{{ url_for('show_all') }}"> 
-            NBAsearch</a>
-      </h3>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+   </head>
+   <body class="has-background-grey-lighter">
+      <iframe width="100%" height="500px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/437/diagrams/schema-for-nba-league/embed"></iframe>
+      <nav class="level">
+         <p class="level-item has-text-centered">
+            <a href = "{{ url_for('show_all') }}">
+               NBA Search</a>
+         </p>
+
+         <p class="level-item has-text-centered">
+           <img src="https://a4.espncdn.com/combiner/i?img=%2Fi%2Fespn%2Fmisc_logos%2F500%2Fnba.png" alt="" style="height: 70px;">
+         </p>
+
+         <p class="level-item has-text-centered">
+            <a href = "{{ url_for('teams_all') }}">NBA Teams
+            </a>
+         </p>
+       </nav>
       
       <hr/>
       {%- for message in get_flashed_messages() %}
          {{ message }}
       {%- endfor %}
-
-      <h3>NBA Teams (<a href = "{{ url_for('teams_all') }}">All NBA Teams
-         </a>)</h3>
-
-      <form action = "/" method = "post">
-         <label for = "addr">Enter SQL commands here:</label><br>
-         <input type="text" id="query" name="query" placeholder = "SELECT ..."></input><br>
-         <input type = "submit" value = "Execute" />
-      </form>
+      
+      <div class="box has-text-centered" >
+         <form action = "/" method = "post">
+            <label for = "addr">SQL commands:</label><br>
+            <input type="input" id="query" name="query" placeholder = "SELECT ... "></input><br>
+            <button class="button is-primary">
+               Execute
+            </button>
+         </form>
+      </div>
       {% if data %}
       <table>
          <thead>
