@@ -1,6 +1,6 @@
 import csv
 import logging
-from flask import Flask, request, flash, url_for, redirect, render_template
+from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 # wrote the following two lines by breaking up one
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
@@ -16,6 +16,7 @@ from contextlib import closing
 # git add instance/ templates/ app.py data.csv README.md students.sqlite3
 # git commit -am "blah"
 
+DB_URL = 'students.sqlite3'
 logging.basicConfig(level=logging.DEBUG)  # for debugging
 
 app = Flask(__name__)  # shortcut for application's module or package
@@ -56,19 +57,56 @@ class teams(db.Model):
         self.Number_Of_Championships = Number_Of_Championships
         self.Home_Stadium = Home_Stadium
 
-def execute_query(stmt_str: str):
+#BACKEND HELPERS
+def execute_query(stmt_str: str, vals = None):
     try:
-        with connect('students.sqlite3', isolation_level=None, uri=True) as connection:
+        with connect(DB_URL, isolation_level=None, uri=True) as connection:
             # Create row factory
             connection.row_factory = Row
             with closing(connection.cursor()) as cursor:
-                cursor.execute(stmt_str)
-                data = cursor.fetchall()
+                if vals:
+                    cursor.execute(stmt_str, vals)
+                else:
+                    cursor.execute(stmt_str)
                 names = [description[0] for description in cursor.description]
+                data = cursor.fetchall()
         return (names, data)
     except:
         return None
-        
+
+def player_search(input: dict):
+    try:
+        stmt_str = "SELECT * FROM players "
+        filters = []
+        vals = []
+        for key in input.keys():
+            filters.append(f"{key} LIKE ? ")
+            vals.append(input[key])
+            if len(filters) != 0:
+                stmt_str += ("WHERE " + " AND ".join(filters))
+        return execute_query(stmt_str, vals)
+    except:
+        return None
+
+def team_search(input: dict):
+    stmt_str = "SELECT AVG(Points_per_Game) as Points_per_Game, AVG(Rebounds_per_Game) as Rebounds_per_Game, "
+    stmt_str += "AVG(Assists_per_Game) as Assists_per_Game, AVG(Steals_per_Game) as Steals_per_Game, "
+    stmt_str += "AVG(Block_per_Game) as Blocks_per_Game, AVG(Turnovers_per_Game) as Turnovers_per_Game"
+    stmt_str += "FROM (team NATURAL JOIN players) "
+    stmt_str += "GROUP BY Team_Name "
+    try:
+        filters = []
+        vals = []
+        for key in input.keys():
+            filters.append(f"{key} LIKE ? ")
+            vals.append(input[key])
+            if len(filters) != 0:
+                stmt_str += ("WHERE " + " AND ".join(filters))
+        return execute_query(stmt_str, vals)
+    except:
+        return None
+
+
 @event.listens_for(students.__table__, 'after_create')
 def create_departments(*args, **kwargs):
     with open('data.csv', newline='\n') as csvfile:
@@ -123,3 +161,40 @@ def new():
             return redirect(url_for('show_all'))
     return render_template('new.html')
 
+@app.route('/searchplayers', methods = ['GET'])
+def search_players():
+    name = request.args.get('name')
+    team = request.args.get('team')
+    pos = request.args.get('pos')
+    if any(item is not None for item in [name, team, pos]):
+        parameters = {
+            "Player_Name": name if name else '',
+            "Team": team if team else '',
+            "Primary_(Secondary)_Position": pos if pos else '',
+        }
+        names, data = player_search(parameters)
+        html = render_template('player_stats.html', name=names, \
+            data = data)
+        response = make_response(html)
+    else:
+        html = render_template('player_stats.html')
+        response = make_response(html)
+    return response
+
+@app.route('/teamstats', methods = ['GET'])
+def team_stats():
+    name = request.args.get('name')
+    div = request.args.get('division')
+    if any(item is not None for item in [name, div]):
+        parameters = {
+            "Team": div if div else '',
+            "Division": div if div else '',
+        }
+        names, data = player_search(parameters)
+        html = render_template('player_stats.html', name=names, \
+            data = data)
+        response = make_response(html)
+    else:
+        html = render_template('player_stats.html')
+        response = make_response(html)
+    return response
