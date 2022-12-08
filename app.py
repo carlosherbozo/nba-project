@@ -82,9 +82,10 @@ def player_search(input: dict):
         for key in input.keys():
             filters.append(f"{key} LIKE ? ")
             vals.append(input[key])
-            if len(filters) != 0:
-                stmt_str += ("WHERE " + " AND ".join(filters))
-        return execute_query(stmt_str, vals)
+        if len(filters) != 0:
+            stmt_str += ("WHERE " + " AND ".join(filters))
+            return execute_query(stmt_str, vals)
+        return execute_query(stmt_str)
     except:
         return None
 
@@ -98,11 +99,13 @@ def team_search(input: dict):
         filters = []
         vals = []
         for key in input.keys():
-            filters.append(f"{key} LIKE ? ")
-            vals.append(input[key])
-            if len(filters) != 0:
-                stmt_str += ("WHERE " + " AND ".join(filters))
-        return execute_query(stmt_str, vals)
+            if len(input[key]) > 0:
+                filters.append(f"{key} LIKE ? ")
+                vals.append(input[key])
+        if len(filters) != 0:
+            stmt_str += ("WHERE " + " AND ".join(filters))
+            return execute_query(stmt_str, vals)
+        return execute_query(stmt_str)
     except:
         return None
 
