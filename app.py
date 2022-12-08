@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from sqlite3 import Cursor, connect, Row
 from contextlib import closing
+import sqlite3
+import pandas as pd
 
 # pip3 install flask
 # pip3 install Flask_sqlalchemy
@@ -58,7 +60,7 @@ class teams(db.Model):
 
 def execute_query(stmt_str: str):
     try:
-        with connect('students.sqlite3', isolation_level=None, uri=True) as connection:
+        with connect('nba.sqlite3', isolation_level=None, uri=True) as connection:
             # Create row factory
             connection.row_factory = Row
             with closing(connection.cursor()) as cursor:
