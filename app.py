@@ -164,7 +164,7 @@ def search_players():
         parameters = {
             "Player_Name": name if name else '',
             "Team_Name": team if team else '',
-            "Primary_(Secondary)_Position": pos if pos else '',
+            "Primary_Secondary_Position": pos if pos else '',
         }
         names, data = player_search(parameters)
         html = render_template('player_stats.html', names=names, data = data)
