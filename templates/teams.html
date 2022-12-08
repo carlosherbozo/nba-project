@@ -4,17 +4,14 @@
    <body>
       
       <h3>
-         <a href = "{{ url_for('show_all') }}">Flask 
-            SQLAlchemy example - Show all view</a>
+         <a href = "{{ url_for('show_all') }}">
+            NBASearch</a>
       </h3>
       
       <hr/>
       {%- for message in get_flashed_messages() %}
          {{ message }}
       {%- endfor %}
-		
-      <h3>Teams (<a href = "{{ url_for('new') }}">Add Team
-         </a>)</h3>
 
       <table>
          <thead>
