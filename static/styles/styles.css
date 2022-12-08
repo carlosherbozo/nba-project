@@ -3,7 +3,9 @@ body {
     font-size:16px;
 } 
 
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+table, th, td, tr {
+    border: 100px solid black;
+    border-collapse: separate;
+    border-spacing: 500px 0;
+
 }

@@ -6,6 +6,7 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
    </head>
    <body class="has-background-grey-lighter">
+ 
       <iframe width="100%" height="500px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/437/diagrams/schema-for-nba-league/embed"></iframe>
       <nav class="level">
          <p class="level-item has-text-centered">
@@ -44,29 +45,31 @@
             <label for = "addr">SQL commands:</label><br>
             <input type="input" id="query" name="query" placeholder = "SELECT ... "></input><br>
             <button class="button is-primary">
-               Run
+               Execute
             </button>
          </form>
       </div>
       {% if data %}
-      <table>
-         <thead>
-            <tr>
-               {% for name in names %}
-                 <th>{{name}}</th>
-               {% endfor %}
-            </tr>
-         </thead>
-         <tbody>
-            {% for row in data %}
+      <div style="overflow-x:auto;">
+         <table>
+            <thead>
                <tr>
                   {% for name in names %}
-                     <td>{{row[name]}}</td>
+                  <th>{{name}}</th>
                   {% endfor %}
                </tr>
-            {% endfor %}
-         </tbody>
-      </table>
-      {% endif %}
+            </thead>
+            <tbody>
+               {% for row in data %}
+                  <tr>
+                     {% for name in names %}
+                        <td>{{row[name]}}</td>
+                     {% endfor %}
+                  </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+         {% endif %}
+      </div>
    </body>
 </html>
