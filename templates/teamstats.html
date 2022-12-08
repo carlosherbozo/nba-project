@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Player Stats</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/styles.css')}}" />
+</head>
+
+<body>
+<h3>Entering information about the teams you are looking for</h3>
+
+<form id="coursesearch" action="search" method="get">
+    <label for="name">Team Name</label>
+    <br>
+    <input type="text" id="name" name="name">
+    <br>
+    <label for="pos">Division</label>
+    <select id="pos" name="pos">
+        <option value=""></option>
+        <option value="Atlantic">Atlantic</option>
+        <option value="Central">Central</option>
+        <option value="Southeast">Southeast</option>
+        <option value="Northwest">Northwest</option>
+        <option value="Pacific">Pacific</option>
+        <option value="Southwest">Southwest</option>
+    </select>
+    <br>
+    <input type="submit" id="submit" value="Search">
+</form>
+
+
+{% if data %}
+<hr>
+<table>
+   <thead>
+      <tr>
+         {% for name in names %}
+           <th>{{name}}</th>
+         {% endfor %}
+      </tr>
+   </thead>
+   <tbody>
+      {% for row in data %}
+         <tr>
+            {% for name in names %}
+               <td>{{row[name]}}</td>
+            {% endfor %}
+         </tr>
+      {% endfor %}
+   </tbody>
+</table>
+{% endif %}
+</body>
+</html>
