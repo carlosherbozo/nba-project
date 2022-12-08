@@ -2,20 +2,20 @@
 <html>
 
 <head>
-    <title>Player Stats</title>
+    <title>Team Stats</title>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/styles.css')}}" />
 </head>
 
 <body>
 <h3>Entering information about the teams you are looking for</h3>
 
-<form id="coursesearch" action="search" method="get">
+<form id="coursesearch" action="teamstats" method="get">
     <label for="name">Team Name</label>
     <br>
     <input type="text" id="name" name="name">
     <br>
-    <label for="pos">Division</label>
-    <select id="pos" name="pos">
+    <label for="div">Division</label>
+    <select id="div" name="div">
         <option value=""></option>
         <option value="Atlantic">Atlantic</option>
         <option value="Central">Central</option>
